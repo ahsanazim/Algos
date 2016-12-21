@@ -20,7 +20,6 @@ return [0, 1].
 **Solution:**
 
 {% highlight python %}
-
 def twoSum(self, nums, target):
     """
     :type nums: List[int]
@@ -45,3 +44,41 @@ def twoSum(self, nums, target):
 {% endhighlight %}
 
 A crucial fact in the above is that when the map encounters a repeated key, it overwrites its corresponding value. This is important for when we're dealing with something like `nums = [1,5,2,9,0,21,4,4,18,20,12]` and `target=8`. You clearly want `[6,7` returned, and this is only possible because, in the second `and`, you're doing `dict[4] !=  6`, which becomes `6 != 7`, which is `True`, and hence you proceed. Crucially, the index for the repeated number stored is 7, not 6. If this were not the case, then your algorithm would fail.
+
+
+Here is an ***Alternate Solution*** employing the two pointer technique. I stumbled
+upon it while attempting the 3sum problem.
+
+{% highlight python %}
+def twoSum(self, nums, target):
+  """
+  :type nums: List[int]
+  :type target: int
+  :rtype: List[int]
+  """
+  nums_s = sorted(nums)
+  l_idx = 0
+  r_idx = len(nums_s) - 1
+  l = None
+  r = None
+  sol = []
+
+  # find the two numbers
+  while (l_idx < r_idx):
+    l = nums_s[l_idx]
+    r = nums_s[r_idx]
+    if (l + r == target):
+      break
+    elif (l + r < target):
+      l_idx += 1
+    else:
+      r_idx -= 1
+
+  # find their indices in original arr
+  for idx, i in enumerate(nums):
+    if ((i == l) or (i==r)):
+      sol.append(idx)
+
+
+  return sol
+{% endhighlight %}
